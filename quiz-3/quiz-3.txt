@@ -1,0 +1,102 @@
+Quiz 3
+Select 10 out of 12
+
+Express
+
+1. Give a sample code to set up route that accepts get requests using express
+
+var express = require('express')
+var app = express()
+app.get('/', function (req, res) {
+  res.send('hello world')
+})
+app.listen(3000);
+
+2. What does app.listen() do in express and what are the parameters it accepts
+
+It starts the HTTP server listening for connections. It creates a listener on the specified port or path.
+The parameters are app.listen(port, [hostname], [backlog], [callback]);
+
+3. How do we start the express server?
+
+We can use the command:
+npm start
+Or we can:
+node app.js
+
+4. Write a code snippet to redirect from /hello to /hi in express with a status code of 200
+
+var express = require('express');
+var app = express();
+app.get('/hello', function (req, res) {
+   res.redirect('/hi');
+});
+app.get('/gu',function(req,res){
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+	res.end();
+});
+app.listen(3000);
+
+
+5. What is response.end() used for in express?
+
+res.end() will end the response process. 
+
+6. How do you set the type of response in express
+
+We can use:
+res.type(type)
+to set the Content-Type HTTP header to the MIME type for the specified type.
+
+
+
+
+Node.js
+
+HTTP module, URL module
+1. Create a HTTP Server and listen on port 4000
+
+var http = require('http');
+//create a server object:
+http.createServer(function (req, res) {
+  res.end(); //end the response
+}).listen(4000);
+
+2. Create a HTTP Server and when any request comes in, respond with text ‘Hello World’ and status code 200
+
+var http = require('http');
+//create a server object:
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write('Hello World!'); //write a response to the client
+  res.end(); //end the response
+}).listen(4000);
+
+3. Create a HTTP Server and when any request comes in, display request URL’s hostname and pathname
+
+var http = require('http');
+//create a server object:
+http.createServer(function (req, res) {
+  res.write(req.hostname + req.path); //write a response to the client
+  res.end(); //end the response
+}).listen(4000);
+
+File System module, Process module
+1. Count the number of files in current directory
+
+
+
+2. Read text file ‘data.txt’ in the current directory and display its contents
+
+var fs = require('fs');
+fs.readFile(process.cwd() + "\\data.txt", function(err, data)
+{
+    if(err)
+        console.log(err)
+    else
+        console.log(data.toString());
+});
+
+3. Display the path of the current working directory
+
+console.log(path.dirname(__filename));
