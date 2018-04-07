@@ -36,7 +36,7 @@ module.exports = function(app) {
       if (foundPage){
         res.json(foundPage);
       } else {
-        res.status(401);
+        res.status(400);
         res.json(foundPage);
       }
     });

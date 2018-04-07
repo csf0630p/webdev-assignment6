@@ -46,15 +46,11 @@ export class WidgetImageComponent implements OnInit {
     );
   }
 
-  search() {
-    this.route.navigate(['./flickr'], {relativeTo: this.activatedRoute});
-  }
-
   ngOnInit() {
     this.activatedRoute.params.subscribe(
       (params: any) => {
         this.userId = params['uid'];
-        this.websiteId = params['wid']
+        this.websiteId = params['wid'];
         this.pageID = params['pid'];
         this.wgid = params['wgid'];
         if (this.wgid === undefined) {
