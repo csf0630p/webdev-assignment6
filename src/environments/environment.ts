@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  // baseUrl: 'https://aqueous-eyrie-82357.herokuapp.com/'
-  baseUrl: 'https://localhost:4200/'
+  baseUrl: 'https://aqueous-eyrie-82357.herokuapp.com/'
+  // baseUrl: 'https://localhost:4200/'
 };
