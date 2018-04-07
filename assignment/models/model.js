@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 // var db = mongoose.connect('mongodb://localhost:27017/webdev');
 
 //used in heroku
-var db = mongoose.connect('mongodb://jinhaoliu:0@ds263837.mlab.com:63837/heroku_1zscvlfl');
+// var db = mongoose.connect('mongodb://admin:admin@ds157097.mlab.com:57097/heroku_wl7dh3j7');
+var db = mongoose.connect('mongodb://localhost:27017/test');
 
 module.exports = db;
