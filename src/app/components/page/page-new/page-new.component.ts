@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {PageService} from '../../../services/page.service.client';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {Page} from '../../../models/page.model.client';
-import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-page-new',
@@ -10,26 +10,40 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./page-new.component.css']
 })
 export class PageNewComponent implements OnInit {
-  @ViewChild('f') pageForm: NgForm;
-  pageName: String;
-  pageTitle: String;
-  websiteID: String;
-  constructor(private pageService: PageService, private activeRoute: ActivatedRoute, private router: Router) { }
+  @ViewChild('f') newForm: NgForm;
+  errorFlag: boolean;
+  errorMsg: string;
+  userId: string;
+  websiteId: string;
+  page: Page;
 
-  createPage() {
-    this.pageName = this.pageForm.value.pagename;
-    this.pageTitle = this.pageForm.value.title;
-    const new_page = new Page(undefined, this.pageName, this.websiteID, this.pageTitle);
-    this.pageService.createPage(this.websiteID, new_page).subscribe(
-      () => this.router.navigate(['../'], {relativeTo: this.activeRoute})
-    );
-  }
+  constructor(private router: Router, private pageService: PageService, private activatedRoute: ActivatedRoute) { }
+
   ngOnInit() {
-    this.activeRoute.params.subscribe(
-      (params: any) => {
-        console.log(params['wid']);
-        this.websiteID = params['wid'];
-      });
+    this.activatedRoute.params
+      .subscribe(
+        (params: any) => {
+          this.userId = params['uid'];
+          this.websiteId = params['wid'];
+        });
+    this.page = new Page(undefined, undefined, this.websiteId, undefined);
+    this.errorFlag = false;
+    this.errorMsg = 'Invalid name or title';
+  }
+
+  onClick() {
+    if (this.newForm.valid) {
+      this.page.name = this.newForm.value.name;
+      this.page.title = this.newForm.value.title;
+      this.pageService.createPage(this.userId, this.websiteId, this.page)
+        .subscribe((page: Page) => {
+          if (page) {
+            this.router.navigate(['/user', 'website', this.websiteId, 'page']);
+          }
+        });
+    } else {
+      this.errorFlag = true;
+    }
   }
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {WidgetService} from '../../../services/widget.service.client';
-import {ActivatedRoute} from '@angular/router';
 import {Widget} from '../../../models/widget.model.client';
 
 @Component({
@@ -9,24 +9,76 @@ import {Widget} from '../../../models/widget.model.client';
   styleUrls: ['./widget-chooser.component.css']
 })
 export class WidgetChooserComponent implements OnInit {
+  userId: string;
+  websiteId: string;
+  pageId: string;
+  widget: Widget;
 
-  widgets: Widget[] = [];
-  pageID: String;
-  constructor(private activatedRoute: ActivatedRoute, private widgetService: WidgetService) { }
+  constructor(private router: Router, private widgetService: WidgetService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(
-      (params: any) => {
-        console.log(params['pid']);
-        this.pageID = params['pid'];
-      }
-    );
-
-    this.widgetService.findAllWidgetsForPage(this.pageID).subscribe(
-      (widgets: Widget[]) => {
-        this.widgets = widgets;
-      }
-    );
+    this.activatedRoute.params
+      .subscribe(
+        (params: any) => {
+          this.userId = params['uid'];
+          this.websiteId = params['wid'];
+          this.pageId = params['pid'];
+        });
+    this.widget = new Widget(undefined, undefined, this.pageId);
   }
 
+  createHeader() {
+    this.widget.type = 'HEADING';
+    this.widgetService.createWidget(this.userId, this.websiteId, this.pageId, this.widget)
+      .subscribe((widget: Widget) => {
+        if (widget) {
+          this.widget = widget;
+          this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget', widget._id]);
+        }
+      });
+  }
+
+  createHTML() {
+    this.widget.type = 'HTML';
+    this.widgetService.createWidget(this.userId, this.websiteId, this.pageId, this.widget)
+      .subscribe((widget: Widget) => {
+        if (widget) {
+          this.widget = widget;
+          this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget', widget._id]);
+        }
+      });
+  }
+
+  createText() {
+    this.widget.type = 'TEXT';
+    this.widgetService.createWidget(this.userId, this.websiteId, this.pageId, this.widget)
+      .subscribe((widget: Widget) => {
+        if (widget) {
+          this.widget = widget;
+          this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget', widget._id]);
+        }
+      });
+  }
+
+  createImage() {
+    this.widget.type = 'IMAGE';
+    this.widgetService.createWidget(this.userId, this.websiteId, this.pageId, this.widget)
+      .subscribe((widget: Widget) => {
+        if (widget) {
+          this.widget = widget;
+          this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget', widget._id]);
+        }
+      });
+  }
+
+  createYoutube() {
+    this.widget.type = 'YOUTUBE';
+    this.widgetService.createWidget(this.userId, this.websiteId, this.pageId, this.widget)
+      .subscribe((widget: Widget) => {
+        if (widget) {
+          this.widget = widget;
+          this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget', widget._id]);
+        }
+      });
+  }
 }

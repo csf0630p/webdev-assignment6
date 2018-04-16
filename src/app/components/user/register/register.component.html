@@ -1,46 +1,67 @@
 <div class="container">
-  <div [hidden]="submitted">
-    <h1>Register</h1>
-
-    <form (ngSubmit)="register()" #f="ngForm">
-      <div class="form-group">
-        <label for="name">UserName</label>
-        <input placeholder="username" type="text" class="form-control" id="name"
-               ngModel required
-               name="username" #username="ngModel"/>
-        <div [hidden]="username.valid || username.untouched"
-             class="alert alert-danger">
-          Name is required
-        </div>
-      </div>
-
-
-      <div class="form-group">
-        <label for="password">PassWord</label>
-        <input placeholder="password" type="password"  class="form-control" id="password"
-               ngModel required
-               name="password" #password="ngModel"/>
-      </div>
-
-      <div class="form-group">
-        <label for="Veripassword">Verify PassWord</label>
-        <input placeholder="Verify password" type="password"  class="form-control" id="Veripassword"
-               ngModel required
-               name="verifypw" #verifypw="ngModel"/>
-      </div>
-
-      <div *ngIf="pwErrorFlag"
-           class="alert alert-danger">
-        {{pwErrorMsg}}
-      </div>
-
-      <button class="btn btn-primary btn-block" type="submit" [disabled]="!f.valid">Register</button>
-      <button class="btn btn-success btn-block" type="button" (click)="login()">Cancel</button>
-    </form>
+  <div *ngIf="errorFlag"
+       class="alert alert-danger">
+    {{ errorMsg }}
   </div>
+  <h1>Register</h1>
+  <form (ngSubmit)="onSubmit()" #f="ngForm">
+    <input type="text"
+           class="form-control"
+           placeholder="username"
+           required
+           ngModel
+           name="username"
+           #username="ngModel"
+           />
+    <div class="alert alert-danger" *ngIf="!username.valid && username.touched">
+      Please enter username!
+    </div>
+    <input type="text"
+           class="form-control"
+           placeholder="firstName"
+           required
+           ngModel
+           name="firstName"
+           #firstName="ngModel"
+    />
+    <div class="alert alert-danger" *ngIf="!firstName.valid && firstName.touched">
+      Please enter firstName!
+   </div>
+    <input type="text"
+           class="form-control"
+           placeholder="lastName"
+           required
+           ngModel
+           name="lastName"
+           #lastName="ngModel"
+    />
+    <div class="alert alert-danger" *ngIf="!lastName.valid && lastName.touched">
+      Please enter lastName!
+   </div>
+    <input type="password"
+           class="form-control"
+           placeholder="password"
+           required
+           ngModel
+           name="password"
+           #password="ngModel"/>
+    <div class="alert alert-danger" *ngIf="!password.valid && password.touched">
+      Please enter password!
+   </div>
+    <input type="password"
+           class="form-control"
+           placeholder="verify password"
+           required
+           ngModel
+           name="verifyPassword"
+           #verifyPassword="ngModel"/>
+    <div class="alert alert-danger" *ngIf="!verifyPassword.valid && verifyPassword.touched">
+      Please verify password!
+   </div>
+    <button class="btn btn-primary btn-block"
+            type="submit"
+            [disabled]="!f.valid">Register</button>
+    <a class="btn btn-danger  btn-block"
+            (click)="login()" >Cancel</a>
+  </form>
 </div>
-
-<!--<div *ngIf="userErrorFlag"-->
-     <!--class="alert alert-danger">-->
-  <!--{{userErrorMsg}}-->
-<!--</div>-->

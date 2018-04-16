@@ -10,51 +10,51 @@ import {Widget} from '../../../../models/widget.model.client';
   styleUrls: ['./widget-header.component.css']
 })
 export class WidgetHeaderComponent implements OnInit {
-
-  @ViewChild('f') headerForm: NgForm;
-  wgid: String;
-  pageID: String;
+  @ViewChild('f') editForm: NgForm;
+  errorFlag: boolean;
+  errorMsg = 'Invalid heading name or text or size';
+  userId: string;
+  websiteId: string;
+  pageId: string;
+  widgetId: string;
   widget: Widget;
-  constructor(private activatedRoute: ActivatedRoute, private widgetService: WidgetService, private route: Router) { }
 
-  delete() {
-    this.widgetService.deleteWidget(this.wgid).subscribe(
-      () => this.route.navigate(['../'], {relativeTo: this.activatedRoute})
-    );
+  constructor(private router: Router, private widgetService: WidgetService, private activatedRoute: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.activatedRoute.params
+      .subscribe(
+        (params: any) => {
+          this.userId = params['uid'];
+          this.websiteId = params['wid'];
+          this.pageId = params['pid'];
+          this.widgetId = params['wgid'];
+        });
+    this.widgetService.findWidgetById(this.userId, this.websiteId, this.pageId, this.widgetId)
+      .subscribe((widget: Widget) => {
+        if (widget) {
+          this.widget = widget;
+        }
+      });
   }
 
-  update() {
-    this.widget.text = this.headerForm.value.text;
-    this.widget.size = this.headerForm.value.size;
-    if (this.wgid === undefined) {
-      this.widgetService.createWidget(this.pageID, this.widget).subscribe(
-        (widget: Widget) => {
-          this.widget = widget;
-          this.route.navigate(['../'], {relativeTo: this.activatedRoute});
-        }
-      );
+  onSubmit() {
+    if (!this.editForm.valid) {
+      this.errorFlag = true;
     } else {
-      this.widgetService.updateWidget(this.wgid, this.widget).subscribe(
-        (widget: Widget) => {
-          this.widget = widget;
-          this.route.navigate(['../'], {relativeTo: this.activatedRoute});
-        }
-      );
+      this.widgetService.updateWidget(this.userId, this.websiteId, this.pageId, this.widgetId, this.widget)
+        .subscribe((widget: Widget) => {
+          if (widget) {
+            this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget']);
+          }
+        });
     }
   }
-  ngOnInit() {
-    this.activatedRoute.params.subscribe(
-      (params: any) => {
-        this.pageID = params['pid'];
-        this.wgid = params['wgid'];
-        if (this.wgid === undefined) {
-          this.widget = new Widget(undefined, 'HEADER', this.pageID, '', '', '', '');
-        } else {
-          this.widgetService.findWidgetById(this.wgid).subscribe(
-            (widget: Widget) => {
-              this.widget = widget;
-            });
-        }
+
+  onDelete() {
+    this.widgetService.deleteWidget(this.userId, this.websiteId, this.pageId, this.widgetId)
+      .subscribe(() => {
+          this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget']);
       });
   }
 

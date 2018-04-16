@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {UserService} from '../../../services/user.service.client';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {User} from '../../../models/user.model.client';
 
 @Component({
@@ -11,39 +11,46 @@ import {User} from '../../../models/user.model.client';
 })
 export class RegisterComponent implements OnInit {
   @ViewChild('f') registerForm: NgForm;
-  username: String;
-  password: String;
-  verifypw: String;
+  errorFlag: boolean;
+  errorMsg: string;
+  // user = {
+  //   _id: '',
+  //   username: '',
+  //   password: '',
+  //   firstName: '',
+  //   lastName: '',
+  //   email: ''
+  // };
   user: User;
-  pwErrorFlag: boolean;
-  pwErrorMsg = 'Password should be same';
-  // userErrorFlag: boolean;
-  // userErrorMsg = 'Already Exist this userName';
+
+
   constructor(private userService: UserService, private router: Router) { }
 
-  register() {
-    this.username = this.registerForm.value.username;
-    this.password = this.registerForm.value.password;
-    this.verifypw = this.registerForm.value.verifypw;
-    if (this.password !== this.verifypw) {
-      this.pwErrorFlag = true;
-    }
-    // if (this.userService.findUserByCredential(this.username, this.password)) {
-    //   this.userErrorFlag = true;
-    // }
-    this.user.username = this.username;
-    this.user.password = this.password;
-    this.userService.createUser(this.user).subscribe((user: User) => {
-      this.user = user;
-      this.router.navigate(['/user', this.user._id]);
-    });
-
+  ngOnInit() {
+    this.errorFlag = false;
+    this.errorMsg = 'Invalid username or password';
+    this.user = this.userService.dumpUser();
   }
+
+  onSubmit() {
+    if (this.registerForm.value.password !== this.registerForm.value.verifyPassword) {
+      this.errorFlag = true;
+    } else {
+      this.user.username = this.registerForm.value.username;
+      this.user.password = this.registerForm.value.password;
+      this.user.firstName = this.registerForm.value.firstName;
+      this.user.lastName = this.registerForm.value.lastName;
+      this.userService.register(this.user.username, this.user.password)
+        .subscribe(
+          (data: any) => {
+            this.router.navigate(['/profile']);
+          }
+        );
+    }
+  }
+
   login() {
     this.router.navigate(['/login']);
-  }
-  ngOnInit() {
-      this.user = this.userService.dumpUser();
   }
 
 }

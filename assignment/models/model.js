@@ -4,6 +4,5 @@ var mongoose = require('mongoose');
 
 //used in heroku
 var db = mongoose.connect('mongodb://admin:admin@ds157097.mlab.com:57097/heroku_wl7dh3j7');
-// var db = mongoose.connect('mongodb://localhost:27017/test');
 
 module.exports = db;

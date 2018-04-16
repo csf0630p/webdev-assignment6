@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {WidgetService} from '../../../../services/widget.service.client';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Widget} from '../../../../models/widget.model.client';
+import {ActivatedRoute, Router} from '@angular/router';
+import {WidgetService} from '../../../../services/widget.service.client';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-widget-text',
@@ -9,28 +10,30 @@ import {Widget} from '../../../../models/widget.model.client';
   styleUrls: ['./widget-text.component.css']
 })
 export class WidgetTextComponent implements OnInit {
-
+  @ViewChild('f') editForm: NgForm;
+  userId: String;
+  websiteId: String;
+  pageId: String;
   wgid: String;
-  pageID: String;
   widget: Widget;
   constructor(private activatedRoute: ActivatedRoute, private widgetService: WidgetService, private route: Router) { }
 
   delete() {
-    this.widgetService.deleteWidget(this.wgid).subscribe(
+    this.widgetService.deleteWidget(this.userId, this.websiteId, this.pageId, this.wgid).subscribe(
       () => this.route.navigate(['../'], {relativeTo: this.activatedRoute})
     );
   }
 
   update() {
-    if (this.wgid === undefined) {
-      this.widgetService.createWidget(this.pageID, this.widget).subscribe(
+    if (this.editForm.valid && this.wgid === undefined) {
+      this.widgetService.createWidget(this.userId, this.websiteId, this.pageId, this.widget).subscribe(
         (widget: Widget) => {
           this.widget = widget;
           this.route.navigate(['../'], {relativeTo: this.activatedRoute});
         }
       );
-    } else {
-      this.widgetService.updateWidget(this.wgid, this.widget).subscribe(
+    } else if (this.editForm.valid) {
+      this.widgetService.updateWidget(this.userId, this.websiteId, this.pageId, this.wgid, this.widget).subscribe(
         (widget: Widget) => {
           this.widget = widget;
           this.route.navigate(['../'], {relativeTo: this.activatedRoute});
@@ -42,12 +45,14 @@ export class WidgetTextComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(
       (params: any) => {
-        this.pageID = params['pid'];
+        this.userId = params['uid'];
+        this.websiteId = params['wid'];
+        this.pageId = params['pid'];
         this.wgid = params['wgid'];
         if (this.wgid === undefined) {
-          this.widget = new Widget(undefined, 'TEXT', this.pageID, '', '', '', '');
+          this.widget = new Widget(undefined, 'TEXT', this.pageId, '', '', '', '');
         } else {
-          this.widgetService.findWidgetById(this.wgid).subscribe(
+          this.widgetService.findWidgetById(this.userId, this.websiteId, this.pageId, this.wgid).subscribe(
             (widget: Widget) => {
               this.widget = widget;
             });

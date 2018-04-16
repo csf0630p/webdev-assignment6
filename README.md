@@ -1,25 +1,10 @@
-Name:
-Shuofei Chen
+# WebDev
 
-Email:
-chen.shuofe@husky.neu.edu
-
-CCIS ID:
-csf0630
-
-Github:
-https://github.ccs.neu.edu/2018SPCS5610SV/assignment-csf0630
-
-Heroku:
-https://aqueous-eyrie-82357.herokuapp.com/
-
-# WebDev Assignment 6
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.4.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.3.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. It is hosted on heroku at https://aqueous-eyrie-82357.herokuapp.com/
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 

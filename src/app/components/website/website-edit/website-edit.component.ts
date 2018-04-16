@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Website} from '../../../models/website.model.client';
 import {WebsiteService} from '../../../services/website.service.client';
 import {NgForm} from '@angular/forms';
-import {relativeToRootDirs} from '@angular/compiler-cli/src/transformers/util';
+import {Website} from '../../../models/website.model.client';
+import {SharedService} from '../../../services/shared.service';
 
 @Component({
   selector: 'app-website-edit',
@@ -11,51 +11,58 @@ import {relativeToRootDirs} from '@angular/compiler-cli/src/transformers/util';
   styleUrls: ['./website-edit.component.css']
 })
 export class WebsiteEditComponent implements OnInit {
+  @ViewChild('f') editForm: NgForm;
+  errorFlag: boolean;
+  errorMsg: string;
+  userId: string;
+  websiteId: string;
+  websites: Website[];
+  currWebsite: Website;
 
-  @ViewChild('f') websiteForm: NgForm;
-  wid: String;
-  website: Website;
-  userId: String;
-  websites: Website[] = [];
-  constructor(private websiteService: WebsiteService, private activatedRoute: ActivatedRoute, private router: Router) { }
-
-  deleteWeb() {
-    this.websiteService.deleteWebsite(this.wid).subscribe(
-      () => this.router.navigate(['../'], {relativeTo: this.activatedRoute}));
-  }
-
-  update() {
-    if (this.websiteForm.value.webname === '') {
-      alert('Please input new web name');
-      return;
-    }
-    this.website.name = this.websiteForm.value.webname;
-    this.website.description = this.websiteForm.value.description;
-    this.websiteService.updateWebsite(this.wid, this.website).subscribe(
-      (website: Website) => {
-        this.website = website;
-        this.router.navigate(['..'], {relativeTo: this.activatedRoute});
-      }
-    );
-  }
+  constructor(private router: Router, private websiteService: WebsiteService, private activatedRoute: ActivatedRoute, private sharedService: SharedService) { }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(
-      (params: any) => {
-        this.userId = params['_id'];
-        this.websiteService.findAllWebsitesForUser(this.userId).subscribe(
-        (websites: Website[]) => {
-         this.websites = websites;
-        });
-
-        this.wid = params['wid'];
-        console.log(this.wid);
-        this.websiteService.findWebsitesById(this.wid).subscribe(
-        (website: Website) => {
-          console.log(website);
-          this.website = website;
+    this.userId = this.sharedService.user['_id'];
+    this.activatedRoute.params
+      .subscribe(
+        (params: any) => {
+          this.websiteId = params['wid'];
         }
       );
+    this.websiteService.findWebsitesByUser(this.userId)
+      .subscribe((websites: Website[]) => {
+        if (websites) {
+          this.websites = websites;
+        }
+      });
+
+    this.websiteService.findWebsiteById(this.userId, this.websiteId)
+      .subscribe((website: Website) => {
+        if (website) {
+          this.currWebsite = website;
+        }
+      });
+    this.errorFlag = false;
+    this.errorMsg = 'Invalid website name or description';
+  }
+
+  onSubmit() {
+    if (this.editForm.valid) {
+    this.websiteService.updateWebsite(this.userId, this.websiteId, this.currWebsite)
+      .subscribe((website: Website) => {
+        if (website) {
+          this.router.navigate(['/user', 'website']);
+        }
+      });
+    } else {
+      this.errorFlag = true;
+    }
+  }
+
+  onDelete() {
+    this.websiteService.deleteWebsite(this.userId, this.websiteId)
+      .subscribe(() => {
+          this.router.navigate(['/user', 'website']);
       });
   }
 

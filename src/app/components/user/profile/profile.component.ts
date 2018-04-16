@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {User} from '../../../models/user.model.client';
 import {UserService} from '../../../services/user.service.client';
 import {ActivatedRoute, Router} from '@angular/router';
+import {User} from '../../../models/user.model.client';
+import {SharedService} from '../../../services/shared.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,37 +10,41 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-
+  userId: string;
   user: User;
-  constructor(
-    private userService: UserService,
-    private router: Router,
-    private route: ActivatedRoute) { }
 
-  updateUser(changed_user) {
-      return this.userService.updateUser(changed_user).subscribe(
-        (user: User) => {
-          this.user = user;
-          this.router.navigate(['/login']);
-        }
-      );
+  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService) { }
+
+  ngOnInit() {
+    this.userId = this.sharedService.user['_id'];
+    return this.userService.findUserById(this.userId).subscribe(
+      (user: User) => {
+        this.user = user;
+      }
+    );
   }
-  deleteUser(delete_user) {
-    return this.userService.deleteUser(delete_user._id).subscribe(
+
+  update() {
+    return this.userService.updateUser(this.user._id, this.user).subscribe(
+      (user: User) => {
+        this.user = user;
+        this.router.navigate(['/login']);
+      }
+    );
+  }
+
+  delete() {
+    return this.userService.deleteUser(this.user._id).subscribe(
       () => this.router.navigate(['/login'])
     );
   }
+
   logout() {
-    this.router.navigate(['/login']);
-  }
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      return this.userService.findUserById(params['_id']).subscribe(
-        (user: User) => {
-          this.user = user;
-        }
-      );
-    });
+    return this.userService.logout().subscribe(
+      () => {
+        this.router.navigate(['/login']);
+      }
+    );
   }
 
 }

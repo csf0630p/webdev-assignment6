@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {WidgetService} from '../../../../services/widget.service.client';
-import {Widget} from '../../../../models/widget.model.client';
 import {NgForm} from '@angular/forms';
 import {environment} from '../../../../../environments/environment';
+import {Widget} from '../../../../models/widget.model.client';
+import {SharedService} from '../../../../services/shared.service';
 
 @Component({
   selector: 'app-widget-image',
@@ -11,57 +12,56 @@ import {environment} from '../../../../../environments/environment';
   styleUrls: ['./widget-image.component.css']
 })
 export class WidgetImageComponent implements OnInit {
-  @ViewChild('f') imageForm: NgForm;
-  pageID: String;
-  wgid: String;
-  websiteId: String;
-  userId: String;
-  width: String;
-  name: String;
-  text: String;
-  url: String;
+  @ViewChild('f') editForm: NgForm;
+  errorFlag: boolean;
+  errorMsg = 'Invalid image name or text or url or width';
+  userId: string;
+  websiteId: string;
+  pageId: string;
+  widgetId: string;
   widget: Widget;
   baseUrl: String = environment.baseUrl;
 
-  constructor(private activatedRoute: ActivatedRoute, private widgetService: WidgetService, private route: Router) {}
-
-  upload() {
-    // this.name = this.imageForm.value.headerName;
-    this.text = this.imageForm.value.text;
-    this.url = this.imageForm.value.url;
-    this.width = this.imageForm.value.width;
-
-    const new_widget = new Widget(undefined, 'IMAGE', this.pageID,
-      '1', this.text.toString(), this.width.toString(), this.url.toString());
-    this.widgetService.createWidget(this.pageID, new_widget).subscribe(
-      (widget: Widget) => {
-        this.widget = widget;
-        this.route.navigate(['../'], {relativeTo: this.activatedRoute});
-      });
-  }
-
-  delete() {
-    this.widgetService.deleteWidget(this.wgid).subscribe(
-      () => this.route.navigate(['../'], {relativeTo: this.activatedRoute})
-    );
-  }
+  constructor(private router: Router, private widgetService: WidgetService, private activatedRoute: ActivatedRoute, private sharedService: SharedService) { }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(
-      (params: any) => {
-        this.userId = params['uid'];
-        this.websiteId = params['wid'];
-        this.pageID = params['pid'];
-        this.wgid = params['wgid'];
-        if (this.wgid === undefined) {
-          this.widget = new Widget(undefined, 'IMAGE', this.pageID);
-        } else {
-          this.widgetService.findWidgetById(this.wgid).subscribe(
-            (widget: Widget) => {
-              this.widget = widget;
-            });
+    this.activatedRoute.params
+      .subscribe(
+        (params: any) => {
+          this.userId = this.sharedService.user['_id'];
+          this.websiteId = params['wid'];
+          this.pageId = params['pid'];
+          this.widgetId = params['wgid'];
+        });
+    this.widgetService.findWidgetById(this.userId, this.websiteId, this.pageId, this.widgetId)
+      .subscribe((widget: Widget) => {
+        if (widget) {
+          this.widget = widget;
         }
       });
   }
 
+  onSubmit() {
+    if (!this.editForm.valid) {
+      this.errorFlag = true;
+    } else {
+      this.widgetService.updateWidget(this.userId, this.websiteId, this.pageId, this.widgetId, this.widget)
+        .subscribe((widget: any) => {
+          if (widget) {
+            this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget']);
+          }
+        });
+    }
+  }
+
+  onDelete() {
+    this.widgetService.deleteWidget(this.userId, this.websiteId, this.pageId, this.widgetId)
+      .subscribe(() => {
+          this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget']);
+      });
+  }
+
+  onSearch() {
+        this.router.navigate(['/user', 'website', this.websiteId, 'page', this.pageId, 'widget', this.widgetId, 'flickr']);
+  }
 }
