@@ -24,24 +24,24 @@ module.exports = function (app) {
   }
 
   function findAllPagesForWebsite(req, res) {
-    var websiteId = req.params['websiteId'];
+    var websiteId = req.params["websiteId"];
     PageModel.findAllPagesForWebsite(websiteId).then((pages) => (res.json(pages)));
   }
 
   function findPageById(req, res){
-    var pageId = req.params['pageId'];
+    var pageId = req.params["pageId"];
     PageModel.findPageById(pageId).then(function (foundPage) {
       if (foundPage){
         res.json(foundPage);
       } else {
-        res.status(401);
+        res.status(400);
         res.json(foundPage);
       }
     });
   }
 
   function updatePage(req, res){
-    var pageId = req.params['pageId'];
+    var pageId = req.params["pageId"];
     var newPage = req.body;
     PageModel.updatePage(pageId, newPage).then((page) => (res.json(page)));
   }
@@ -49,7 +49,7 @@ module.exports = function (app) {
 
 
   function deletePage(req, res){
-    var pageId = req.params['pageId'];
+    var pageId = req.params["pageId"];
     PageModel.deletePage(pageId).then(() => (
       res.sendStatus(200)));
     res.send("success");

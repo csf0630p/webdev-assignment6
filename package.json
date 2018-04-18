@@ -27,11 +27,9 @@
     "@angular/router": "^5.1.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.5",
-
     "bcrypt-nodejs": "0.0.3",
     "cookie-parser": "^1.4.1",
     "express-session": "^1.13.0",
-
     "core-js": "^2.4.1",
     "express": "^4.16.2",
     "http": "0.0.0",

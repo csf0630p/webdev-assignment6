@@ -23,12 +23,8 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.static(path.join(__dirname, 'src/assets')));
 
 
-app.use(session({
-    secret: 'this is the secret',
-    resave: true,
-    saveUninitialized: true
-}));
 app.use(cookieParser());
+app.use(session({ secret: process.env.SESSION_SECRET }));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -47,7 +43,7 @@ app.use(function(req, res, next) {
 
 
 
-const port = process.env.PORT || '3100';
+const port = process.env.PORT || 3100;
 app.set('port', port);
 
 
@@ -63,6 +59,6 @@ app.get('*', function (req, res) {
 });
 
 
+server.listen( port , function() {
 
-
-server.listen( port , () => console.log('Running on port ' + port));
+  console.log('Node app is running on port', app.get('port'))});
