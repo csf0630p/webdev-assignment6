@@ -6,4 +6,5 @@
 export const environment = {
   production: false,
   baseUrl: 'https://calm-dawn-38694.herokuapp.com'
+  // baseUrl: 'http://localhost:4200'
 };
