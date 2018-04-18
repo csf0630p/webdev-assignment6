@@ -1,13 +1,13 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy;
+// var FacebookStrategy = require('passport-facebook').Strategy;
 var bcrypt = require("bcrypt-nodejs");
 
-var facebookConfig = {
-  clientID     : '1441116875993300',
-  clientSecret : '2b23864a22b38c962f2ef64a53915eca',
-  callbackURL  : 'https://webdev-jinhaoliu.herokuapp.com/auth/facebook/callback'
-};
+// var facebookConfig = {
+//   clientID     : '1441116875993300',
+//   clientSecret : '2b23864a22b38c962f2ef64a53915eca',
+//   callbackURL  : 'https://webdev-jinhaoliu.herokuapp.com/auth/facebook/callback'
+// };
 
 
 
@@ -22,16 +22,16 @@ module.exports = function (app) {
   app.put("/api/user/:userId", updateUser);
   app.delete("/api/user/:userId", deleteUser);
 
-  app.get ('/facebook/login', passport.authenticate('facebook', { scope : 'email' }));
+  // app.get ('/facebook/login', passport.authenticate('facebook', { scope : 'email' }));
   app.post('/api/login', passport.authenticate('local'), login);
   app.post('/api/logout', logout);
   app.post('/api/register', register);
   app.post ('/api/loggedIn', loggedIn);
-  app.get('/auth/facebook/callback',
-      passport.authenticate('facebook', {
-          successRedirect: '/profile',
-          failureRedirect: '/register'
-  }));
+  // app.get('/auth/facebook/callback',
+  //     passport.authenticate('facebook', {
+  //         successRedirect: '/profile',
+  //         failureRedirect: '/register'
+  // }));
 
 
   passport.use(new LocalStrategy(function(username, password, done) {
@@ -53,7 +53,7 @@ module.exports = function (app) {
 
   passport.serializeUser(serializeUser);
   passport.deserializeUser(deserializeUser);
-  passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
+  // passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
 
   function serializeUser(user, done) {
         done(null, user);
@@ -73,43 +73,43 @@ module.exports = function (app) {
   }
 
 
-  function facebookStrategy(token, refreshToken, profile, done) {
-      UserModel.findFacebookUser(profile.id).then(
-          function (user) {
-              if (user) {
-                  return done(null, user);
-              } else {
-                  var names = profile.displayName.split(" ");
-                  var newFacebookUser = {
-                      username: 'temp username',
-                      password: bcrypt.hashSync("temp password"),
-                      lastName: names[1],
-                      firstName: names[0],
-                      email: profile.emails ? profile.emails[0].value : "",
-                      facebook: {
-                        id: profile.id,
-                        token: token
-                      }
-                  };
-                  return UserModel.createUser(newFacebookUser);
-                }
-          },
-          function (err) {
-             if (err) {
-                return done(err);
-             }
-          }
-        ).then(
-          function (user) {
-              return done(null, user);
-          },
-          function (err) {
-              if (err) {
-                  return done(err);
-              }
-            }
-        );
-  }
+  // function facebookStrategy(token, refreshToken, profile, done) {
+  //     UserModel.findFacebookUser(profile.id).then(
+  //         function (user) {
+  //             if (user) {
+  //                 return done(null, user);
+  //             } else {
+  //                 var names = profile.displayName.split(" ");
+  //                 var newFacebookUser = {
+  //                     username: 'temp username',
+  //                     password: bcrypt.hashSync("temp password"),
+  //                     lastName: names[1],
+  //                     firstName: names[0],
+  //                     email: profile.emails ? profile.emails[0].value : "",
+  //                     facebook: {
+  //                       id: profile.id,
+  //                       token: token
+  //                     }
+  //                 };
+  //                 return UserModel.createUser(newFacebookUser);
+  //               }
+  //         },
+  //         function (err) {
+  //            if (err) {
+  //               return done(err);
+  //            }
+  //         }
+  //       ).then(
+  //         function (user) {
+  //             return done(null, user);
+  //         },
+  //         function (err) {
+  //             if (err) {
+  //                 return done(err);
+  //             }
+  //           }
+  //       );
+  // }
 
   function login(req, res) {
       var user = req.user;
