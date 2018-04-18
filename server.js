@@ -24,7 +24,12 @@ app.use(express.static(path.join(__dirname, 'src/assets')));
 
 
 app.use(cookieParser());
-app.use(session({ secret: process.env.SESSION_SECRET }));
+// app.use(session({ secret: process.env.SESSION_SECRET }));
+app.use(session({
+  secret: 'this is the secret',
+  resave: true,
+  saveUninitialized: true
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -43,7 +48,7 @@ app.use(function(req, res, next) {
 
 
 
-const port = process.env.PORT || 3100;
+const port = process.env.PORT || '3100';
 app.set('port', port);
 
 
