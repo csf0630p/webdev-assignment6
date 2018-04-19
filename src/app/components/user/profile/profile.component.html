@@ -21,12 +21,8 @@
       <input type="text" class="form-control" id="username" placeholder="Username" [(ngModel)]="user.username" name="username" required/>
     </div>
     <div class="form-group">
-      <label for="email">Email address</label>
+      <label for="email">Email</label>
       <input type="email" class="form-control" id="email" placeholder="alice@wonderland.com" [(ngModel)]="user.email" name="email"/>
-    </div>
-    <div class="form-group">
-      <label for="phone">Phone number</label>
-      <input type="text" class="form-control" id="phone" placeholder="alice@wonderland.com" [(ngModel)]="user.phone" name="phone"/>
     </div>
     <div class="form-group">
       <label for="first-name">First Name</label>
@@ -37,14 +33,18 @@
       <input type="text" class="form-control" id="last-name" placeholder="Wonderland" [(ngModel)]="user.lastName" name="last-name"/>
     </div>
     <div class="form-group">
-      <label for="password">Password</label>
+      <label for="phone">Phone</label>
+      <input type="text" class="form-control" id="phone" placeholder="alice@wonderland.com" [(ngModel)]="user.phone" name="phone"/>
+    </div>
+    <div class="form-group">
+      <label for="password">Password (Encrypted)</label>
       <input type="text" class="form-control" id="password" placeholder="password" [(ngModel)]="user.password" name="password" required/>
     </div>
     <a class="btn btn-primary btn-block"
        [routerLink]="['/user', 'website']">Websites</a>
     <a class="btn btn-danger btn-block"
        (click)="delete()">Delete User</a>
-    <a class="btn btn-info  btn-block"
+    <a class="btn btn-danger  btn-block"
        (click)="logout()">Logout</a>
   </form>
 </div>
