@@ -20,11 +20,9 @@ export class UserService {
   logout() {
         this.options.withCredentials = true;
         return this.http.post(this.baseUrl + '/api/logout', '', this.options)
-            .map(
-              (res: Response) => {
-                const data = res;
-              }
-            );
+            .map((response: Response) => {
+              return response.json();
+            });
   }
 
   login(username: String, password: String) {
