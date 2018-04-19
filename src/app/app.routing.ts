@@ -12,7 +12,7 @@ import {WebsiteNewComponent} from './components/website/website-new/website-new.
 import {WebsiteEditComponent} from './components/website/website-edit/website-edit.component';
 import {WidgetChooserComponent} from './components/widget/widget-chooser/widget-chooser.component';
 import {WidgetEditComponent} from './components/widget/widget-edit/widget-edit.component';
-import {FlickrImageSearchComponent} from './components/widget/widget-edit/widget-image/flickr-image-search/flickr-image-search.component';
+// import {FlickrImageSearchComponent} from './components/widget/widget-edit/widget-image/flickr-image-search/flickr-image-search.component';
 import {AuthGuard} from './services/auth-guard.service';
 import {WidgetHeaderComponent} from './components/widget/widget-edit/widget-header/widget-header.component';
 import {WidgetImageComponent} from './components/widget/widget-edit/widget-image/widget-image.component';
@@ -38,7 +38,7 @@ const APP_ROUTES: Routes = [
   { path : 'user/website/:wid/page/:pid/widget/youtube', component: WidgetYoutubeComponent, canActivate: [AuthGuard]},
   { path : 'user/website/:wid/page/:pid/widget/html', component: WidgetHtmlComponent, canActivate: [AuthGuard]},
   { path : 'user/website/:wid/page/:pid/widget/text', component: WidgetTextComponent, canActivate: [AuthGuard]},
-  { path : 'user/website/:wid/page/:pid/widget/:wgid/flickr', component: FlickrImageSearchComponent, canActivate: [AuthGuard]},
+  // { path : 'user/website/:wid/page/:pid/widget/:wgid/flickr', component: FlickrImageSearchComponent, canActivate: [AuthGuard]},
   { path : 'user/website/:wid/page/:pid/widget/:wgid', component: WidgetEditComponent, canActivate: [AuthGuard]},
   { path : '', redirectTo: '/login', pathMatch: 'full'}
 ];

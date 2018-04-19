@@ -27,8 +27,8 @@ import {PageService} from './services/page.service.client';
 import {WidgetService} from './services/widget.service.client';
 import {SafePipe} from './app.safePipe';
 import { SortableDirective } from '../../assignment/directives/sortable.directive';
-import { FlickrImageSearchComponent } from './components/widget/widget-edit/widget-image/flickr-image-search/flickr-image-search.component';
-import {FlickrService} from './services/flickr.service.client';
+// import { FlickrImageSearchComponent } from './components/widget/widget-edit/widget-image/flickr-image-search/flickr-image-search.component';
+// import {FlickrService} from './services/flickr.service.client';
 import { WidgetHtmlComponent } from './components/widget/widget-edit/widget-html/widget-html.component';
 import {QuillEditorModule} from 'ngx-quill-editor/quillEditor.module';
 import { WidgetTextComponent } from './components/widget/widget-edit/widget-text/widget-text.component';
@@ -56,7 +56,7 @@ import {AuthGuard} from './services/auth-guard.service';
     WidgetYoutubeComponent,
     SafePipe,
     SortableDirective,
-    FlickrImageSearchComponent,
+    // FlickrImageSearchComponent,
     WidgetHtmlComponent,
     WidgetTextComponent,
   ],
@@ -72,7 +72,7 @@ import {AuthGuard} from './services/auth-guard.service';
     WebsiteService,
     PageService,
     WidgetService,
-    FlickrService,
+    // FlickrService,
     SharedService,
     AuthGuard
   ],
