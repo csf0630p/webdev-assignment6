@@ -13,16 +13,24 @@ export class UserService {
   constructor(private http: Http, private sharedService: SharedService, private router: Router) { }
 
   baseUrl = environment.baseUrl;
+
+  // api = {
+  //   'createUser'   : this.createUser,
+  //   'findUserById' : this.findUserById,
+  //   'findUserByUsername' : this.findUserByUsername,
+  //   'findUserByCredentials' : this.findUserByCredentials,
+  //   'updateUser' : this.updateUser,
+  //   'deleteUser' : this.deleteUser
+  // };
+
   options = new RequestOptions();
 
   logout() {
         this.options.withCredentials = true;
         return this.http.post(this.baseUrl + '/api/logout', '', this.options)
-            .map(
-              (res: Response) => {
-                const data = res;
-              }
-            );
+            .map((response: Response) => {
+              return response.json();
+            });
   }
 
   login(username: String, password: String) {
