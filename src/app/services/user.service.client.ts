@@ -13,16 +13,6 @@ export class UserService {
   constructor(private http: Http, private sharedService: SharedService, private router: Router) { }
 
   baseUrl = environment.baseUrl;
-
-  // api = {
-  //   'createUser'   : this.createUser,
-  //   'findUserById' : this.findUserById,
-  //   'findUserByUsername' : this.findUserByUsername,
-  //   'findUserByCredentials' : this.findUserByCredentials,
-  //   'updateUser' : this.updateUser,
-  //   'deleteUser' : this.deleteUser
-  // };
-
   options = new RequestOptions();
 
   logout() {
