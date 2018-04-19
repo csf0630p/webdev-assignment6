@@ -25,6 +25,7 @@ import {UserService} from './services/user.service.client';
 import {WebsiteService} from './services/website.service.client';
 import {PageService} from './services/page.service.client';
 import {WidgetService} from './services/widget.service.client';
+import {SafePipe} from './app.safePipe';
 import { SortableDirective } from '../../assignment/directives/sortable.directive';
 import { WidgetHtmlComponent } from './components/widget/widget-edit/widget-html/widget-html.component';
 import {QuillEditorModule} from 'ngx-quill-editor/quillEditor.module';
@@ -51,6 +52,7 @@ import {AuthGuard} from './services/auth-guard.service';
     WidgetHeaderComponent,
     WidgetImageComponent,
     WidgetYoutubeComponent,
+    SafePipe,
     SortableDirective,
     WidgetHtmlComponent,
     WidgetTextComponent,
