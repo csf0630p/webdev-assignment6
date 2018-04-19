@@ -24,12 +24,12 @@ app.use(express.static(path.join(__dirname, 'src/assets')));
 
 
 app.use(cookieParser());
-// app.use(session({ secret: process.env.SESSION_SECRET }));
-app.use(session({
-  secret: 'this is the secret',
-  resave: true,
-  saveUninitialized: true
-}));
+app.use(session({ secret: process.env.SESSION_SECRET }));
+// app.use(session({
+//   secret: 'this is the secret',
+//   resave: true,
+//   saveUninitialized: true
+// }));
 
 app.use(passport.initialize());
 app.use(passport.session());
