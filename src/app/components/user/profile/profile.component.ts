@@ -40,10 +40,9 @@ export class ProfileComponent implements OnInit {
   }
 
   logout() {
-    return this.userService.logout().subscribe(
-      () => {
-        this.router.navigate(['/login']);
-      }
+    return this.userService.logout()
+      .subscribe(
+        (data: any) => this.router.navigate(['/login'])
     );
   }
 
