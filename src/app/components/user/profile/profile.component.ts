@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
     return this.userService.updateUser(this.user._id, this.user).subscribe(
       (user: User) => {
         this.user = user;
-        this.router.navigate(['/login']);
+        this.router.navigate(['/profile']);
       }
     );
   }
