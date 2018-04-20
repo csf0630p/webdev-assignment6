@@ -22,7 +22,8 @@ module.exports = function (app) {
   app.post ('/api/loggedIn', loggedIn);
 
 
-  passport.use(new LocalStrategy(function(username, password, done) {
+  passport.use(new LocalStrategy(localStrategy));
+  function localStrategy(username, password, done) {
     UserModel
       .findUserByUserName(username)
       .then(
