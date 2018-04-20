@@ -103,16 +103,6 @@ export class UserService {
       );
   }
 
-  // findUserByUsername(username: string) {
-  //   return this.http.get(this.baseUrl + '/api/user?username=' + username)
-  //     .map(
-  //       (res: Response) => {
-  //         const data = res.json();
-  //         return data;
-  //       }
-  //     );
-  // }
-
   findUserByCredentials(username: string, password: string) {
     return this.http.get(this.baseUrl + '/api/user?username=' + username + '&password=' + password)
       .map((response: Response) => {
